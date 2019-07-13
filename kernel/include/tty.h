@@ -4,4 +4,6 @@
 void terminal_init(void);
 void print(const char*);
 
+void print_int(signed int i, const unsigned int base);
+
 #endif
