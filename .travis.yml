@@ -1,3 +1,6 @@
+services:
+  - docker
+
 addons:
   apt:
     update: true
@@ -7,43 +10,18 @@ addons:
       - smallos.iso
 
 before_install:
-  - sudo apt-get -qq install -y build-essential bison flex libgmp3-dev	libmpc-dev libmpfr-dev texinfo wget
+  - docker pull neatoro/smallos-build
+
 script:
   - export ROOT=$(pwd)
 
-  - export PREFIX="$ROOT/opt/cross"
-  - export TARGET=i686-elf
-  - export PATH="$PREFIX/bin:$PATH"
+  - docker run --mount type=bind,source="$(pwd)",target=/app neatoro/smallos-build:latest make compile
 
   - mkdir _srctools
   - mkdir xor
   - cd _srctools
-  - wget -q https://ftp.gnu.org/gnu/binutils/binutils-2.32.tar.gz
-  - wget -q https://ftp.gnu.org/gnu/gcc/gcc-8.3.0/gcc-8.3.0.tar.gz
   - wget -q https://ftp.gnu.org/gnu/xorriso/xorriso-1.5.0.tar.gz
-  - tar -xzf binutils-2.32.tar.gz
-  - tar -xzf gcc-8.3.0.tar.gz
   - tar -xzf xorriso-1.5.0.tar.gz
-
-  - cd $ROOT/_srctools
-  - mkdir build-bin
-  - cd build-bin
-  - ../binutils-2.32/configure --target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
-  - make &> /dev/null
-  - make install &> /dev/null
-
-  - cd $ROOT/_srctools
-  - mkdir build-gcc
-  - cd build-gcc
-  - mkdir logs
-  - touch logs/all-gcc.log
-  - ../gcc-8.3.0/configure --target=$TARGET --prefix="$PREFIX" --disable-nls --enable-languages=c,c++ --without-headers
-  - tail -f logs/all-gcc.log | sed -n -e '0~5p' &
-  - make all-gcc &> logs/all-gcc.log
-  - kill %1
-  - make all-target-libgcc &> /dev/null
-  - make install-gcc &> /dev/null
-  - make install-target-libgcc &> /dev/null
 
   - cd $ROOT/_srctools/xorriso-1.5.0
   - ./configure --prefix=$ROOT/xor
