@@ -28,7 +28,6 @@ script:
   - make
 
   - cd $ROOT
-  - make compile
   - grub-file --is-x86-multiboot bin/smallos.bin
   - mkdir -p isodir/boot/grub
   - cp bin/smallos.bin isodir/boot/smallos.bin
