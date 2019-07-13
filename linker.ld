@@ -4,23 +4,23 @@ SECTIONS {
 
     . = 1M;
 
-    .text BLOCK(4K) : ALIGN(4K)
+    .text BLOCK(8K) : ALIGN(8K)
     {
         *(.multiboot)
         *(.text)
     }
 
-    .rodata BLOCK(4K) : ALIGN(4K)
+    .rodata BLOCK(8K) : ALIGN(8K)
     {
         *(.rodata)
     }
 
-    .data BLOCK(4K) : ALIGN(4K)
+    .data BLOCK(8K) : ALIGN(8K)
     {
         *(.data)
     }
 
-    .bss BLOCK(4K) : ALIGN(4K)
+    .bss BLOCK(8K) : ALIGN(8K)
     {
         *(COMMON)
         *(.bss)
