@@ -11,10 +11,10 @@
 .long CHECKSUM
 
 .section .bss
-.align 32
+.align 16
 
 stack_bottom:
-.skip 32768
+.skip 16384
 stack_top:
 
 .section .text
