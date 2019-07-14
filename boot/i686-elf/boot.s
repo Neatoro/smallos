@@ -31,7 +31,13 @@ _generate_mmap:
     xor %bp, %bp
     mov %eax, 0xe820
     mov %edx, 0x534D4150
-    mov %ecx, 0x18
+    mov %ecx, 24
+    int $0x15
+    jc _mmap_error
+    inc %bp
+    jmp _kernel
+
+_mmap_error:
 
 _kernel:
     call kernel_main
