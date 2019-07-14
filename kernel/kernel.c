@@ -5,9 +5,9 @@ void kernel_main(void) {
 
     register int ebx asm("ebx");
     register int eax asm("eax");
-    register int bp asm("bp");
+    //egister int bp asm("bp");
 
     print_int(ebx, 16);
     print_int(eax, 16);
-    print_int(bp, 16);
+    //print_int(bp, 16);
 }
