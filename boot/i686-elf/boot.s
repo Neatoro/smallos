@@ -29,8 +29,15 @@ _kernel:
     call kernel_main
     ret
 
+_generate_mmap:
+    xor %ebx, %ebx
+    xor %bp, %bp
+    mov %eax, 0xe820
+    ret
+
 _start:
     jmp _setup_stack
+    jmp _generate_mmap
     jmp _kernel
 
     cli
