@@ -36,16 +36,16 @@ _generate_mmap:
     mov %eax, 0xe820
     mov %edx, 0x534D4150
     mov %ecx, 24
-    int $0x15
-    jc _mmap_error
+    ;int $0x15
+    ;jc _mmap_error
     
-    mov %edx, 0x534D4150
-    cmp %eax, %edx
-    jne _mmap_error
-    je _mmap_test 
+    ;mov %edx, 0x534D4150
+    ;cmp %eax, %edx
+    ;jne _mmap_error
+    ;je _mmap_test 
 
-_mmap_test:
-    mov %bp, 1
+;_mmap_test:
+;    mov %bp, 1
 
 _kernel:
     call kernel_main
