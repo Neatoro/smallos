@@ -1,4 +1,4 @@
-#include<stddef.h> 
+#include<stddef.h>
 #include<stdint.h>
 #include<string.h>
 #include<tty.h>
@@ -15,7 +15,7 @@ uint16_t* terminal_buffer;
 void terminal_setcolor(uint8_t color) {
 	terminal_color = color;
 }
- 
+
 void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 	const size_t index = y * VGA_WIDTH + x;
 	terminal_buffer[index] = vga_entry(c, color);
@@ -41,24 +41,31 @@ void print(const char* data) {
     }
 }
 
+void newline() {
+    terminal_column = 0;
+    if (++terminal_row == VGA_HEIGHT) {
+        terminal_row = 0;
+    }
+}
+
+void println(const char* data) {
+    print(data);
+    newline();
+}
+
 void print_int(signed int i, const unsigned int base) {
     if (i < 0) {
         terminal_putchar('-');
-        print_int(-1 * i, base);
-    } else if (i == 0) {
-        terminal_putchar('0');
-    } else {
-        while (i != 0) {
-            unsigned int j = i;
-            unsigned int k = 0;
-            while (j % base != j) {
-                j = (j - j % base) / base;
-                ++k;
-            }
+        i = -1 * i;
+    }
 
-            terminal_putchar("0123456789ABCDEF"[j]);
-            i = i - j * k * base;
-        }
+    unsigned int k = i % base;
+    if (k == i) {
+        terminal_putchar("0123456789ABCDEF"[k]);
+    } else {
+        i = (i - k) / base;
+        print_int(i, base);
+        terminal_putchar("0123456789ABCDEF"[k]);
     }
 }
 

@@ -3,7 +3,10 @@
 void kernel_main(void) {
     terminal_init();
 
-    print("Testing string print: Hello Kernel World!");
+    println("Hello World");
+    println("Foo Bar");
+    println("");
     print_int(10, 10);
+    println("");
     print_int(10, 16);
 }
