@@ -3,10 +3,11 @@
 void kernel_main(void) {
     terminal_init();
 
-    println("Hello World");
-    println("Foo Bar");
-    println("");
-    print_int(10, 10);
-    println("");
-    print_int(10, 16);
+    register int ebx asm("ebx");
+    register int eax asm("eax");
+    register int bp asm("bp");
+
+    print_int(ebx, 16);
+    print_int(eax, 16);
+    print_int(bp, 16);
 }
