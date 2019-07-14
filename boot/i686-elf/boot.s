@@ -20,11 +20,18 @@ stack_top:
 .section .text
 .global _start
 .type _start, @function
-_start:
-    mov $stack_top, %esp
 
-kernel:
+_setup_stack:
+    mov $stack_top, %esp
+    ret
+
+_kernel:
     call kernel_main
+    ret
+
+_start:
+    jmp _setup_stack
+    jmp _kernel
 
     cli
 1:  hlt
