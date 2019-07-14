@@ -28,6 +28,7 @@ _setup_stack:
 
 _generate_mmap:
     xor %ebx, %ebx
+    xor bp, bp
     mov %eax, 0xe820
 
 _kernel:
