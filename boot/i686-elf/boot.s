@@ -21,6 +21,10 @@ stack_top:
 .global _start
 .type _start, @function
 
+_mmap_error:
+    mov %bp, 0
+    jmp _kernel
+
 _start:
 
 _setup_stack:
@@ -30,6 +34,18 @@ _generate_mmap:
     xor %ebx, %ebx
     xor %bp, %bp
     mov %eax, 0xe820
+    mov %edx, 0x534D4150
+    mov %ecx, 24
+    int $0x15
+    jc _mmap_error
+    
+    mov %edx, 0x534D4150
+    cmp %eax, %edx
+    jne _mmap_error
+    je _mmap_test 
+
+_mmap_test:
+    mov %bp, 1
 
 _kernel:
     call kernel_main
