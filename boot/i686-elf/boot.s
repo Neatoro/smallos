@@ -35,7 +35,7 @@ _generate_mmap:
     xor %bp, %bp
     mov %eax, 0xe820
     mov %edx, 0x534D4150
-    mov %ecx, 24
+    mov %ecx, 0x18
     ;int $0x15
     ;jc _mmap_error
     
