@@ -53,13 +53,51 @@ void println(const char* data) {
     newline();
 }
 
-void print_int(signed int i, const unsigned int base) {
+void print_int(int i, const unsigned int base) {
     if (i < 0) {
         terminal_putchar('-');
         i = -1 * i;
     }
 
+    int k = i % base;
+    if (k == i) {
+        terminal_putchar("0123456789ABCDEF"[k]);
+    } else {
+        i = (i - k) / base;
+        print_int(i, base);
+        terminal_putchar("0123456789ABCDEF"[k]);
+    }
+}
+
+void print_uint(unsigned int i, const unsigned int base) {
     unsigned int k = i % base;
+    if (k == i) {
+        terminal_putchar("0123456789ABCDEF"[k]);
+    } else {
+        i = (i - k) / base;
+        print_int(i, base);
+        terminal_putchar("0123456789ABCDEF"[k]);
+    }
+}
+
+void print_long(long i, const unsigned int base) {
+    if (i < 0) {
+        terminal_putchar('-');
+        i = -1 * i;
+    }
+
+    long k = i % base;
+    if (k == i) {
+        terminal_putchar("0123456789ABCDEF"[k]);
+    } else {
+        i = (i - k) / base;
+        print_int(i, base);
+        terminal_putchar("0123456789ABCDEF"[k]);
+    }
+}
+
+void print_ulong(unsigned long i, const unsigned int base) {
+    unsigned long k = i % base;
     if (k == i) {
         terminal_putchar("0123456789ABCDEF"[k]);
     } else {
