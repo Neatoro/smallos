@@ -8,6 +8,7 @@ void kernel_main(void) {
     //egister int bp asm("bp");
 
     print_int(ebx, 16);
+    println("");
     print_int(eax, 16);
     //print_int(bp, 16);
 }
