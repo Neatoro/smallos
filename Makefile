@@ -12,12 +12,10 @@ default:
 	$(TARGET)-gcc -Ilib -Ikernel/include -c -std=gnu99 -ffreestanding -O2 -Wall -Wextra -o bin/$@ $<
 
 boot.o:
-	mkdir -p boot_bin
-	$(TARGET)-as boot/$(TARGET)/boot.s -o boot_bin/boot.o
+	$(TARGET)-as boot/$(TARGET)/boot.s -o bin/boot.o
 
 clean:
 	rm -rf bin
-	rm -rf boot_bin
 
 compile: $(KERNEL_DEFAULT_FILES) $(ARCH_FILES) $(LIB_FILES) boot.o
-	i686-elf-gcc -Wl,--build-id=none -T linker.ld -o bin/smallos.bin -ffreestanding -O2 -nostdlib boot_bin/boot.o $(shell find -name "*.o" -path "./bin/*") -lgcc
+	i686-elf-gcc -Wl,--build-id=none -T linker.ld -o bin/smallos.bin -ffreestanding -O2 -nostdlib $(shell find -name "*.o" -path "./bin/*") -lgcc

@@ -41,8 +41,6 @@ void print(const char* data) {
     }
 }
 
-char* number_alphabet = "0123456789ABCDEF";
-
 void print_int(signed int i, const unsigned int base) {
     if (i < 0) {
         terminal_putchar('-');
@@ -58,7 +56,7 @@ void print_int(signed int i, const unsigned int base) {
                 ++k;
             }
 
-            terminal_putchar(number_alphabet[j]);
+            terminal_putchar("0123456789ABCDEF"[j]);
             i = i - j * k * base;
         }
     }
