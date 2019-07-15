@@ -10,24 +10,20 @@ addons:
       - smallos.iso
 
 before_install:
-  - docker pull neatoro/smallos-build
+  - docker pull neatoro/smallos-build &> /dev/null
 
 script:
-  - export ROOT=$(pwd)
-
-  - docker run --mount type=bind,source="$(pwd)",target=/app neatoro/smallos-build:latest make compile
-
   - mkdir _srctools
   - mkdir xor
   - cd _srctools
   - wget -q https://ftp.gnu.org/gnu/xorriso/xorriso-1.5.0.tar.gz
   - tar -xzf xorriso-1.5.0.tar.gz
-
-  - cd $ROOT/_srctools/xorriso-1.5.0
+  - cd xorriso-1.5.0
   - ./configure --prefix=$ROOT/xor
   - make
+  - cd ../..
 
-  - cd $ROOT
+  - docker run --mount type=bind,source="$(pwd)",target=/app neatoro/smallos-build:latest make compile
   - grub-file --is-x86-multiboot bin/smallos.bin
   - mkdir -p isodir/boot/grub
   - cp bin/smallos.bin isodir/boot/smallos.bin
