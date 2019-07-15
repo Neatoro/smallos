@@ -34,7 +34,7 @@ _start:
 1:
     cmpl $(_kernel_start - 0xC0000000), %esi
     jl 2f
-    cmpl (_kernel_end - 0xC0000000), %esi
+    cmpl $(_kernel_end - 0xC0000000), %esi
     jge 3f
 
     movl %esi, %edx
