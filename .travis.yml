@@ -28,4 +28,4 @@ script:
   - mkdir -p isodir/boot/grub
   - cp bin/smallos.bin isodir/boot/smallos.bin
   - cp grub.cfg isodir/boot/grub/grub.cfg
-  - grub-mkrescue -o smallos.iso --xorriso="$ROOT/_srctools/xorriso-1.5.0/xorriso/xorriso" isodir
+  - grub-mkrescue -o smallos.iso --xorriso="./_srctools/xorriso-1.5.0/xorriso/xorriso" isodir
