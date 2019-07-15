@@ -26,7 +26,7 @@ SECTIONS {
     {
         *(COMMON)
         *(.bss)
-        *(.stack)
+        *(.bt_stack)
     }
 
     _kernel_end = .;

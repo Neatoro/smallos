@@ -10,7 +10,7 @@
 .long FLAGS
 .long CHECKSUM
 
-.section .stack
+.section .bt_stack
 stack_bottom:
 .skip 16384
 stack_top:
@@ -39,7 +39,7 @@ _start:
 
     movl %esi, %edx
     orl $0x003, %edx
-    movl %edx, %edi
+    movl %edx, (%edi)
 
 2:
     addl $4096, %esi
