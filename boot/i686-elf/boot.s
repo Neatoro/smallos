@@ -3,88 +3,73 @@
 .set FLAGS, ALIGN | MEMINFO
 .set MAGIC, 0x1BADB002
 .set CHECKSUM, -(MAGIC + FLAGS)
-.set KERNEL_PAGE_NUMBER, (0xC0000000 >> 22)
 
-.section .multiboot
+.set KERNEL_ADDR_OFFSET, 0xC0000000
+.set KERNEL_PAGE_NUMBER, KERNEL_ADDR_OFFSET >> 22
+.set KERNEL_NUM_UPPER_PAGES, 7
+
+.section .multiboot.data, "a"
 .align 4
 .long MAGIC
 .long FLAGS
 .long CHECKSUM
 
-.section .bt_stack
-stack_bottom:
-.skip 16384
-stack_top:
-
-.section .data
 .align 0x1000
+
 boot_page_directory:
-    .word 0x00000083
-    .rept (KERNEL_PAGE_NUMBER - 1)
-    .word 0
-    .endr
+    .long 0x00000083
 
-    .word 0x00000083
-    .rept (1024 - KERNEL_PAGE_NUMBER - 1)
-    .word 0
-    .endr
+    .fill (KERNEL_PAGE_NUMBER - 1), 4
 
-boot_page_table1:
-    .skip 4096
+    .long 0x00000083
+    .long 0x00000083 | (1 << 22)
+    .long 0x00000083 | (2 << 22)
+    .long 0x00000083 | (3 << 22)
+    .long 0x00000083 | (4 << 22)
+    .long 0x00000083 | (5 << 22)
+    .long 0x00000083 | (6 << 22)
 
-.section .bss
-.align 32
+    .fill(1024 - KERNEL_PAGE_NUMBER - KERNEL_NUM_UPPER_PAGES), 4
+
+.section .multiboot.text, "ax", @progbits
+.align 16
+
+.global start
+start:
+    mov $boot_page_directory, %ecx
+    mov %ecx, %cr3
+
+    mov %cr4, %ecx
+    or $0x00000010, %ecx
+    mov %ecx, %cr4
+
+    mov %cr0, %ecx
+    or $0x80000000, %ecx
+    mov %ecx, %cr0
+    jmp start_higher_half
 
 .section .text
-.global _start
-.type _start, @function
-_start:
-    movl $(boot_page_table1 - 0xC0000000), %edi
-    movl $0, %esi
-    movl $1023, %ecx
 
-1:
-    cmpl $(_kernel_start - 0xC0000000), %esi
-    jl 2f
-    cmpl $(_kernel_end - 0xC0000000), %esi
-    jge 3f
+start_higher_half:
+	invlpg (0)
 
-    movl %esi, %edx
-    orl $0x003, %edx
-    movl %edx, (%edi)
+    mov $kernel_stack_end, %esp
+    mov %esp, %ebp
 
-2:
-    addl $4096, %esi
-    addl $4, %edi
+    push %eax
 
-    loop 1b
-
-3:
-    movl $(0x000B8000 | 0x003), boot_page_table1 - 0xC0000000 + 1023 * 4
-    movl $(boot_page_table1 - 0xC0000000 + 0x003), boot_page_directory - 0xC0000000 + 0
-    movl $(boot_page_table1 - 0xC0000000 + 0x003), boot_page_directory - 0xC0000000 + 768 * 4
-
-    movl $(boot_page_directory - 0xC0000000), %ecx
-    movl %ecx, %cr3
-
-    movl %cr0, %ecx
-    orl $0x80010000, %ecx
-    movl %ecx, %cr0
-
-    lea 4f, %ecx
-    jmp *%ecx
-
-4:
-
-    movl $0, boot_page_directory + 0
-    
-    movl %cr3, %ecx
-    movl %ecx, %cr3
-
-    mov $stack_top, %esp
-
-    call kernel_main
+    add $KERNEL_ADDR_OFFSET, %ebx
+    push %ebx
 
     cli
-1:  hlt
-    jmp 1b
+    call kernel_main
+l:
+    hlt
+    jmp l
+
+.section .bss
+.align 16
+
+kernel_stack:
+    .fill 16384
+kernel_stack_end:

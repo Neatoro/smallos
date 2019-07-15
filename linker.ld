@@ -1,34 +1,48 @@
-ENTRY(_start)
+ENTRY(start)
+
+KERNEL_OFFSET = 0xC0000000;
+KERNEL_BASE = 0xC0100000;
 
 SECTIONS
 {
 
-    . = 0xC0100000;
+    . = 1M;
+    KERNEL_PHYSICAL_ADDR = .;
 
-    _kernel_start = .;
-
-    .text ALIGN(4K) : AT (ADDR (.text) - 0xC0000000)
+    .multiboot.data :
     {
-        *(.multiboot)
-        *(.text)
+        *(.multiboot.data)
     }
 
-    .rodata ALIGN(4K) : AT (ADDR (.rodata) - 0xC0000000)
+    .multiboot.text :
     {
-        *(.rodata)
+        *(.multiboot.text)
     }
 
-    .data ALIGN(4K) : AT (ADDR (.data) - 0xC0000000)
-    {
-        *(.data)
-    }
+    . += KERNEL_OFFSET;
 
-    .bss ALIGN(4K) : AT (ADDR (.bss) - 0xC0000000)
-    {
-        *(COMMON)
-        *(.bss)
-        *(.bt_stack)
-    }
+        .text ALIGN(4K) : AT (ADDR (.text) - KERNEL_OFFSET)
+        {
+            *(.multiboot)
+            *(.text)
+        }
 
-    _kernel_end = .;
+        .rodata ALIGN(4K) : AT (ADDR (.rodata) - KERNEL_OFFSET)
+        {
+            *(.rodata)
+        }
+
+        .data ALIGN(4K) : AT (ADDR (.data) - KERNEL_OFFSET)
+        {
+            *(.data)
+        }
+
+        .bss ALIGN(4K) : AT (ADDR (.bss) - KERNEL_OFFSET)
+        {
+            *(COMMON)
+            *(.bss)
+        }
+
+    KERNEL_PHYSADDR_END = . - KERNEL_OFFSET;
+    KERNEL_VADDR_END = .;
 }
