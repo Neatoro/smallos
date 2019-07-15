@@ -3,6 +3,7 @@
 .set FLAGS, ALIGN | MEMINFO
 .set MAGIC, 0x1BADB002
 .set CHECKSUM, -(MAGIC + FLAGS)
+.set KERNEL_PAGE_NUMBER, (0xC0000000 >> 22)
 
 .section .multiboot
 .align 4
@@ -10,17 +11,29 @@
 .long FLAGS
 .long CHECKSUM
 
-.section .bt_stack, "aw", @nobits
+.section .bt_stack
 stack_bottom:
 .skip 16384
 stack_top:
 
-.section .bss, "aw", @nobits
-.align 4096
+.section .data
+.align 0x1000
 boot_page_directory:
-    .skip 4096
+    .word 0x00000083
+    .rept (KERNEL_PAGE_NUMBER - 1)
+    .word 0
+    .endr
+
+    .word 0x00000083
+    .rept (1024 - KERNEL_PAGE_NUMBER - 1)
+    .word 0
+    .endr
+
 boot_page_table1:
     .skip 4096
+
+.section .bss
+.align 32
 
 .section .text
 .global _start
