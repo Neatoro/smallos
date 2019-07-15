@@ -48,11 +48,11 @@ _start:
     loop 1b
 
 3:
-    movl $(0x000B8000 | 0x003), boot_page_table1 - 0xC0000000 + 1024 * 4
-    movl $(boot_page_table1 - 0xC000000 + 0x003), boot_page_directory - 0xC0000000 + 0
-    movl $(boot_page_table1 - 0xC000000 + 0x003), boot_page_directory + 768 * 4
+    movl $(0x000B8000 | 0x003), boot_page_table1 - 0xC0000000 + 1023 * 4
+    movl $(boot_page_table1 - 0xC0000000 + 0x003), boot_page_directory - 0xC0000000 + 0
+    movl $(boot_page_table1 - 0xC0000000 + 0x003), boot_page_directory - 0xC0000000 + 768 * 4
 
-    movl $(boot_page_directory - 0xC000000), %ecx
+    movl $(boot_page_directory - 0xC0000000), %ecx
     movl %ecx, %cr3
 
     movl %cr0, %ecx
@@ -79,4 +79,4 @@ _start:
 1:  hlt
     jmp 1b
 
-.size _start, . - _start
+# .size _start, . - _start
