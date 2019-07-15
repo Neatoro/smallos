@@ -27,6 +27,10 @@ boot_page_table1:
 .type _start, @function
 _start:
 
+    mov $stack_top, %esp
+
+    push %ebx
+
     movl $(boot_page_table1 - 0xC0000000), %edi
     movl $0, %esi
     movl $1023, %ecx
@@ -68,10 +72,6 @@ _start:
     
     movl %cr3, %ecx
     movl %ecx, %cr3
-
-    mov $stack_top, %esp
-
-    push %ebx
     
     call kernel_main
 
