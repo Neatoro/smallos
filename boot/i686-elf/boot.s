@@ -10,12 +10,12 @@
 .long FLAGS
 .long CHECKSUM
 
-.section .bt_stack
+.section .bt_stack, "aw", @nobits
 stack_bottom:
 .skip 16384
 stack_top:
 
-.section .bss
+.section .bss, "aw", @nobits
 .align 4096
 boot_page_directory:
     .skip 4096
