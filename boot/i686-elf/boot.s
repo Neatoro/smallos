@@ -26,7 +26,6 @@ boot_page_table1:
 .global _start
 .type _start, @function
 _start:
-
     movl $(boot_page_table1 - 0xC0000000), %edi
     movl $0, %esi
     movl $1023, %ecx
@@ -71,12 +70,8 @@ _start:
 
     mov $stack_top, %esp
 
-    push %ebx
-    
     call kernel_main
 
     cli
 1:  hlt
     jmp 1b
-
-# .size _start, . - _start

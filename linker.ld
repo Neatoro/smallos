@@ -1,6 +1,7 @@
 ENTRY(_start)
 
-SECTIONS {
+SECTIONS
+{
 
     . = 0xC0100000;
 

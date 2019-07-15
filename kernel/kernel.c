@@ -1,10 +1,11 @@
 #include<multiboot.h>
 #include<tty.h>
 
-void kernel_main(multiboot_info_t* mbd, unsigned int magic) {
+void kernel_main(/*multiboot_info_t* mbd, unsigned int magic*/) {
     terminal_init();
+    println("Hello World");
 
-    if ( (mbd->flags & MULTIBOOT_INFO_MEMORY) == MULTIBOOT_INFO_MEMORY) {
+    /*if ( (mbd->flags & MULTIBOOT_INFO_MEMORY) == MULTIBOOT_INFO_MEMORY) {
         println("Memory information detected");
         if ( (mbd->flags & MULTIBOOT_INFO_MEM_MAP) == MULTIBOOT_INFO_MEM_MAP) {
             println("Memory map detected");
@@ -28,6 +29,6 @@ void kernel_main(multiboot_info_t* mbd, unsigned int magic) {
             print("MB");
             println("");
         }
-    }
+    }*/
 
 }
