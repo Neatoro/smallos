@@ -14,6 +14,7 @@
 .long FLAGS
 .long CHECKSUM
 
+.section .data
 .align 0x1000
 
 boot_page_directory:
@@ -36,7 +37,7 @@ boot_page_directory:
 
 .global start
 start:
-    mov $boot_page_directory, %ecx
+    mov (boot_page_directory - KERNEL_ADDR_OFFSET), %ecx
     mov %ecx, %cr3
 
     mov %cr4, %ecx
@@ -54,8 +55,7 @@ start_higher_half:
 	invlpg (0)
 
     mov $kernel_stack_end, %esp
-    mov %esp, %ebp
-
+    
     push %eax
 
     add $KERNEL_ADDR_OFFSET, %ebx
@@ -68,7 +68,7 @@ l:
     jmp l
 
 .section .bss
-.align 16
+.align 32
 
 kernel_stack:
     .fill 16384
