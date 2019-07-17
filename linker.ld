@@ -9,7 +9,7 @@ SECTIONS
     . = 1M;
     KERNEL_PHYSICAL_ADDR = .;
 
-    .multiboot.data :
+    .multiboot :
     {
         *(.multiboot)
     }
