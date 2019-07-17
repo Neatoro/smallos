@@ -11,19 +11,13 @@ SECTIONS
 
     .multiboot.data :
     {
-        *(.multiboot.data)
-    }
-
-    .multiboot.text :
-    {
-        *(.multiboot.text)
+        *(.multiboot)
     }
 
     . += KERNEL_OFFSET;
 
         .text ALIGN(4K) : AT (ADDR (.text) - KERNEL_OFFSET)
         {
-            *(.multiboot)
             *(.text)
         }
 

@@ -8,7 +8,7 @@
 .set KERNEL_PAGE_NUMBER, KERNEL_ADDR_OFFSET >> 22
 .set KERNEL_NUM_UPPER_PAGES, 1
 
-.section .multiboot.data
+.section .multiboot
 .align 4
 .long MAGIC
 .long FLAGS
