@@ -1,42 +1,22 @@
 ENTRY(loader)
-
-KERNEL_OFFSET = 0xC0000000;
-KERNEL_BASE = 0xC0100000;
-
-SECTIONS
-{
-
-    . = 1M;
-    KERNEL_PHYSICAL_ADDR = .;
-
-    .multiboot :
-    {
-        *(.multiboot)
-    }
-
-    . += KERNEL_OFFSET;
-
-        .text ALIGN(4K) : AT (ADDR (.text) - KERNEL_OFFSET)
-        {
-            *(.text)
-        }
-
-        .rodata ALIGN(4K) : AT (ADDR (.rodata) - KERNEL_OFFSET)
-        {
-            *(.rodata)
-        }
-
-        .data ALIGN(4K) : AT (ADDR (.data) - KERNEL_OFFSET)
-        {
-            *(.data)
-        }
-
-        .bss ALIGN(4K) : AT (ADDR (.bss) - KERNEL_OFFSET)
-        {
-            *(COMMON)
-            *(.bss)
-        }
-
-    KERNEL_PHYSADDR_END = . - KERNEL_OFFSET;
-    KERNEL_VADDR_END = .;
+ 
+SECTIONS {
+   . = 0xC0100000;
+ 
+   .text : AT(ADDR(.text) - 0xC0000000) {
+       *(.multiboot)
+       *(.text)
+       *(.rodata*)
+   }
+ 
+   .data ALIGN (0x1000) : AT(ADDR(.data) - 0xC0000000) {
+       *(.data)
+   }
+ 
+   .bss : AT(ADDR(.bss) - 0xC0000000) {
+       _sbss = .;
+       *(COMMON)
+       *(.bss)
+       _ebss = .;
+   }
 }
