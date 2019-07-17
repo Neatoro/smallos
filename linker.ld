@@ -4,15 +4,10 @@ KERNEL_ADDR_OFFSET = 0xC0000000;
  
 SECTIONS {
 
-    . = 1M;
-
-    .multiboot : {
-        *(.multiboot)
-    }
-
-    . += KERNEL_ADDR_OFFSET;
+    . = 1M + KERNEL_ADDR_OFFSET;
 
     .text : AT(ADDR(.text) - KERNEL_ADDR_OFFSET) {
+        *(.multiboot)
         *(.text)
         *(.rodata*)
     }
