@@ -6,9 +6,9 @@
 
 .set KERNEL_ADDR_OFFSET, 0xC0000000
 .set KERNEL_PAGE_NUMBER, KERNEL_ADDR_OFFSET >> 22
-.set KERNEL_NUM_UPPER_PAGES, 7
+.set KERNEL_NUM_UPPER_PAGES, 1
 
-.section .multiboot.data, "a"
+.section .multiboot.data
 .align 4
 .long MAGIC
 .long FLAGS
@@ -16,27 +16,21 @@
 
 .section .data
 .align 0x1000
-
 boot_page_directory:
     .long 0x00000083
 
     .fill (KERNEL_PAGE_NUMBER - 1), 4
 
     .long 0x00000083
-    .long 0x00000083 | (1 << 22)
-    .long 0x00000083 | (2 << 22)
-    .long 0x00000083 | (3 << 22)
-    .long 0x00000083 | (4 << 22)
-    .long 0x00000083 | (5 << 22)
-    .long 0x00000083 | (6 << 22)
 
     .fill(1024 - KERNEL_PAGE_NUMBER - KERNEL_NUM_UPPER_PAGES), 4
 
-.section .multiboot.text, "ax", @progbits
-.align 16
+.section .text
 
-.global start
-start:
+.set loader, (_loader - KERNEL_ADDR_OFFSET)
+.global loader
+
+_loader:
     mov (boot_page_directory - KERNEL_ADDR_OFFSET), %ecx
     mov %ecx, %cr3
 
@@ -47,7 +41,9 @@ start:
     mov %cr0, %ecx
     or $0x80000000, %ecx
     mov %ecx, %cr0
-    jmp start_higher_half
+
+    lea start_higher_half, %ecx
+    jmp *%ecx
 
 .section .text
 
@@ -61,7 +57,6 @@ start_higher_half:
     add $KERNEL_ADDR_OFFSET, %ebx
     push %ebx
 
-    cli
     call kernel_main
 l:
     hlt
@@ -69,7 +64,6 @@ l:
 
 .section .bss
 .align 32
-
 kernel_stack:
     .fill 16384
 kernel_stack_end:
