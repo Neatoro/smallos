@@ -27,10 +27,8 @@ boot_page_directory:
 
 .section .text
 
-.set loader, (_loader - KERNEL_ADDR_OFFSET)
 .global loader
-
-_loader:
+loader:
     mov (boot_page_directory - KERNEL_ADDR_OFFSET), %ecx
     mov %ecx, %cr3
 
