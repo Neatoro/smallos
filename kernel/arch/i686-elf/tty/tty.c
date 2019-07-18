@@ -129,6 +129,12 @@ void dump_register(void) {
     register int edi asm("edi");
     register int ebp asm("ebp");
     register int esp asm("esp");
+    register int rdi asm("rdi");
+    register int rsi asm("rsi");
+    register int rdx asm("rdx");
+    register int rcx asm("rcx");
+
+    println("-----------------");
 
     print("EAX: 0x");
     print_int(eax, 16);
@@ -161,4 +167,22 @@ void dump_register(void) {
     print("ESP: 0x");
     print_int(esp, 16);
     newline();
+
+    print("RDI: 0x");
+    print_int(rdi, 16);
+    newline();
+
+    print("RSI: 0x");
+    print_int(rsi, 16);
+    newline();
+
+    print("RDX: 0x");
+    print_int(rdx, 16);
+    newline();
+
+    print("RCX: 0x");
+    print_int(rcx, 16);
+    newline();
+
+    println("-----------------");
 } 
