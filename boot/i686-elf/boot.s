@@ -34,7 +34,6 @@ _start:
 .global gdt_flush
 gdt_flush:
     mov 4(%esp), %eax
-    pop %ebx
     call dump_register
 
     # lgdt (%eax)
