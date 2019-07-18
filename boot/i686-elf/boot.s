@@ -30,5 +30,23 @@ _start:
     cli
 1:  hlt
     jmp 1b
+    
+.global gdt_flush
+gdt_flush:
+    mov 4(%esp), %eax
+
+    lgdt (%eax)
+    mov 0x16, %ax
+    mov %ax, %ds
+    mov %ax, %es
+    mov %ax, %fs
+    mov %ax, %gs
+    mov %ax, %ss
+
+    mov %cr0, %eax
+    or 0x1, %eax
+    mov %eax, %cr0
+
+    ret
 
 .size _start, . - _start
