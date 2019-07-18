@@ -33,6 +33,11 @@ _start:
     
 .global gdt_flush
 gdt_flush:
+    call dump_register
+    mov 2(%esp), %eax
+    call dump_register
+    mov 3(%esp), %eax
+    call dump_register
     mov 4(%esp), %eax
     call dump_register
 
