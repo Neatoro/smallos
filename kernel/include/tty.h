@@ -12,4 +12,6 @@ void print_long(long i, const unsigned int base);
 void print_uint(unsigned int i, const unsigned int base);
 void print_ulong(unsigned long i, const unsigned int base);
 
+void dump_register(void);
+
 #endif

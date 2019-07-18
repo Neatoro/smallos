@@ -7,10 +7,7 @@ void kernel_main(multiboot_info_t* mbd, unsigned int magic) {
 
     gdt_init();
 
-    register int eax asm("eax");
-    print("Current State of EAX: 0x");
-    print_int(eax, 16);
-    println("");
+    dump_register();
 
     if ( (mbd->flags & MULTIBOOT_INFO_MEMORY) == MULTIBOOT_INFO_MEMORY) {
         println("Memory information detected");
