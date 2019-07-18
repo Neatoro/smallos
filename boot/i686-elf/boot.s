@@ -47,6 +47,8 @@ gdt_flush:
     or 0x1, %eax
     mov %eax, %cr0
 
+    jmp $0x08, $flush
+flush:
     ret
 
 .size _start, . - _start
