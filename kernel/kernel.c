@@ -3,12 +3,19 @@
 #include<tty.h>
 
 void kernel_main(multiboot_info_t* mbd, unsigned int magic) {
+    terminal_init();
+
     gdt_init();
 
-    terminal_init();
+    register int eax asm("eax");
+    print("Current State of EAX: 0x");
+    print_int(eax, 16);
+    println("");
 
     if ( (mbd->flags & MULTIBOOT_INFO_MEMORY) == MULTIBOOT_INFO_MEMORY) {
         println("Memory information detected");
+        print_uint(magic, 16);
+        println("");
         if ( (mbd->flags & MULTIBOOT_INFO_MEM_MAP) == MULTIBOOT_INFO_MEM_MAP) {
             println("Memory map detected");
 

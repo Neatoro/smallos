@@ -1,4 +1,5 @@
 #include<gdt.h>
+#include<tty.h>
 
 extern void gdt_flush(uint32_t gdt_pointer_addr);
 
@@ -12,6 +13,10 @@ void gdt_init(void) {
     gdt_put_entry(0, 0, 0, 0, 0);
     gdt_put_entry(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
     gdt_put_entry(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
+
+    print("Pointer to GDT: 0x");
+    print_int(((uint32_t) &gdt_pointer), 16);
+    println("");
 
     gdt_flush((uint32_t) &gdt_pointer);
 }
