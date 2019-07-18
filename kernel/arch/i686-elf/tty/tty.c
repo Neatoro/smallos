@@ -119,3 +119,70 @@ void terminal_init(void) {
         }
     }
 }
+
+void dump_register(void) {
+    register int eax asm("eax");
+    register int ebx asm("ebx");
+    register int ecx asm("ecx");
+    register int edx asm("edx");
+    register int esi asm("esi");
+    register int edi asm("edi");
+    register int ebp asm("ebp");
+    register int esp asm("esp");
+    register int rdi asm("rdi");
+    register int rsi asm("rsi");
+    register int rdx asm("rdx");
+    register int rcx asm("rcx");
+
+    println("-----------------");
+
+    print("EAX: 0x");
+    print_int(eax, 16);
+    newline();
+
+    print("EBX: 0x");
+    print_int(ebx, 16);
+    newline();
+
+    print("ECX: 0x");
+    print_int(ecx, 16);
+    newline();
+
+    print("EDX: 0x");
+    print_int(edx, 16);
+    newline();
+
+    print("ESI: 0x");
+    print_int(esi, 16);
+    newline();
+
+    print("EDI: 0x");
+    print_int(edi, 16);
+    newline();
+
+    print("EBP: 0x");
+    print_int(ebp, 16);
+    newline();
+
+    print("ESP: 0x");
+    print_int(esp, 16);
+    newline();
+
+    print("RDI: 0x");
+    print_int(rdi, 16);
+    newline();
+
+    print("RSI: 0x");
+    print_int(rsi, 16);
+    newline();
+
+    print("RDX: 0x");
+    print_int(rdx, 16);
+    newline();
+
+    print("RCX: 0x");
+    print_int(rcx, 16);
+    newline();
+
+    println("-----------------");
+} 
