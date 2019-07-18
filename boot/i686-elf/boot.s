@@ -36,12 +36,13 @@ gdt_flush:
     mov 4(%esp), %eax
 
     lgdt (%eax)
-    mov 0x16, %ax
+    mov 0x10, %ax
     mov %ax, %ds
     mov %ax, %es
     mov %ax, %fs
     mov %ax, %gs
     mov %ax, %ss
+    mov 0x08, %cs
 
     mov %cr0, %eax
     or 0x1, %eax
