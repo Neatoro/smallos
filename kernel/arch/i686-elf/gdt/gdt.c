@@ -14,6 +14,8 @@ void gdt_init(void) {
     gdt_put_entry(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
     gdt_put_entry(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
 
+    print_int(16, 16);
+    println("");
     print("Pointer to GDT: 0x");
     print_int(((uint32_t) &gdt_pointer), 16);
     println("");

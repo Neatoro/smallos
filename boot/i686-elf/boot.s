@@ -24,21 +24,17 @@ _start:
     mov $stack_top, %esp
 
     push %ebx
-    
+
     call kernel_main
 
     cli
 1:  hlt
     jmp 1b
-    
+
 .global gdt_flush
 gdt_flush:
-    call dump_register
-    mov 2(%esp), %eax
-    call dump_register
-    mov 3(%esp), %eax
-    call dump_register
-    mov 4(%esp), %eax
+    push %ebp
+    mov 4(%esp), %ebp
     call dump_register
 
     # lgdt (%eax)
