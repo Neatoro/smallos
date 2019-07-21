@@ -36,7 +36,7 @@ gdt_flush:
     mov 4(%esp), %ebp
     call dump_register
 
-    # lgdt (%eax)
+    lgdt (%ebp)
     # mov 0x10, %ax
     # mov %ax, %ds
     # mov %ax, %es
