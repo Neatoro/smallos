@@ -37,19 +37,18 @@ gdt_flush:
     call dump_register
 
     lgdt (%ebp)
-    # mov 0x10, %ax
-    # mov %ax, %ds
-    # mov %ax, %es
-    # mov %ax, %fs
-    # mov %ax, %gs
-    # mov %ax, %ss
-    # mov 0x08, %cs
+    mov 0x10, %ax
+    mov %ax, %ds
+    mov %ax, %es
+    mov %ax, %fs
+    mov %ax, %gs
+    mov %ax, %ss
+    
+    mov %cr0, %eax
+    or 0x1, %eax
+    mov %eax, %cr0
 
-    # mov %cr0, %eax
-    # or 0x1, %eax
-    # mov %eax, %cr0
-
-    # jmp $0x08, $flush
+    jmp $0x08, $flush
 flush:
     ret
 
