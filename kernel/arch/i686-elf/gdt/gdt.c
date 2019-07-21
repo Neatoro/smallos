@@ -11,8 +11,8 @@ void gdt_init(void) {
     gdt_pointer.limit = sizeof(gdt_entry_t) * GDT_ENTRY_COUNT - 1;
 
     gdt_put_entry(0, 0, 0, 0, 0);
-    gdt_put_entry(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
-    gdt_put_entry(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
+    gdt_put_entry(1, 0, 0xFFFFF, 0x9A, 0xCF);
+    gdt_put_entry(2, 0, 0xFFFFF, 0x92, 0xCF);
 
     print_int(16, 16);
     println("");

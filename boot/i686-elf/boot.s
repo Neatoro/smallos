@@ -34,7 +34,6 @@ _start:
 .global gdt_flush
 gdt_flush:    
     mov 4(%esp), %ebp
-    call dump_register
 
     lgdt (%ebp)
     mov 0x10, %ax
@@ -43,10 +42,12 @@ gdt_flush:
     mov %ax, %fs
     mov %ax, %gs
     mov %ax, %ss
-    
+
     mov %cr0, %eax
     or 0x1, %eax
     mov %eax, %cr0
+
+    call dump_register
 
     jmp $0x08, $flush
 flush:
