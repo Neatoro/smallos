@@ -7,7 +7,9 @@
 .set KERNEL_CODE_SEGMENT, 0x8
 .set KERNEK_DATA_SEGMENT, 0x10
 
-.section .multiboot
+.set KERNEL_ADDR_OFFSET, 0xC0000000
+
+.section .multiboot.data, "a"
 .align 4
 .long MAGIC
 .long FLAGS
@@ -26,7 +28,10 @@ stack_top:
 _start:
     mov $stack_top, %esp
 
+    add $KERNEL_ADDR_OFFSET, %ebx
     push %ebx
+
+    push %eax
 
     cli
     
