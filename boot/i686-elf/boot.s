@@ -32,8 +32,7 @@ _start:
     jmp 1b
 
 .global gdt_flush
-gdt_flush:
-    push %ebp
+gdt_flush:    
     mov 4(%esp), %ebp
     call dump_register
 
